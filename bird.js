@@ -13,6 +13,7 @@ let treeUpArray = [];
 let treeDownArray = [];
 const gravity = 9.8;
 var reqId;
+let s;
 
 const background = {
   x: 0,
@@ -84,6 +85,31 @@ document.onkeydown = function(event) {
   }
 };
 
+function reset() {
+  for (let i = 0; i < s; i++) {
+    treeUpArray.pop();
+    treeDownArray.pop();
+  }
+  r1 = Math.floor(Math.random() * 450);
+  r2 = canvas.height - r1 - 100;
+
+  treeUpArray[0] = {
+    x: canvas.width,
+    y: 0,
+    height: r1
+  };
+
+  treeDownArray[0] = {
+    x: canvas.width,
+    height: r2,
+    y: canvas.height - r2
+
+  };
+  bird.x = canvas.width / 12;
+  bird.y = canvas.height / 2.5;
+  bird.score = 0;
+}
+
 function move() {
   fly.play();
   bird.y -= 40;
@@ -107,19 +133,14 @@ function drawBack() {
 
   if (bird.y < 0 || bird.y + bird.height > canvas.height) {
     die.play();
-    window.cancelAnimationFrame(reqId);
-    alert("GAME OVER!\nSCORE " + bird.score);
-    location.reload();
+    reset();
   }
 
-
+  s = treeUpArray.length;
 
   for (let i = 0; i < treeUpArray.length; i++) {
     ctx.drawImage(tu, treeUpArray[i].x, treeUpArray[i].y, treeUp.width, treeUpArray[i].height);
-
     ctx.drawImage(td, treeDownArray[i].x, treeDownArray[i].y, treeDown.width, treeDownArray[i].height);
-
-
 
     if (treeUpArray[i].x > 100 - 50) {
       if (bird.x > treeUpArray[i].x) {
@@ -128,21 +149,19 @@ function drawBack() {
       }
       if (bird.x + bird.width > treeUpArray[i].x && bird.y < treeUpArray[i].y + treeUpArray[i].height - 30) {
         die.play();
-        window.cancelAnimationFrame(reqId);
-        alert("GAME OVER!\nSCORE " + bird.score);
-        location.reload();
+        reset();
+        break;
       } else if (bird.y + bird.height > treeDownArray[i].y + 30 && bird.x + bird.width > treeDownArray[i].x) {
         die.play();
-        window.cancelAnimationFrame(reqId);
-        alert("GAME OVER!\nSCORE " + bird.score);
-        location.reload();
+        reset();
+        break;
       }
     }
+
     treeUpArray[i].x -= treeUp.speed;
     treeDownArray[i].x -= treeDown.speed;
 
     if (treeUpArray[i].x == canvas.width - 500) {
-
       var c1 = Math.floor(Math.random() * 450);
       var c2 = canvas.height - c1 - 100;
       treeUpArray.push({
@@ -157,11 +176,11 @@ function drawBack() {
       });
     }
   }
-
   bird.y += bird.speed;
   ctx.font = "30px Arial";
   ctx.fillText("SCORE " + bird.score, 10, 50);
+
   reqId = window.requestAnimationFrame(drawBack);
 }
-drawBack();
 
+drawBack();
