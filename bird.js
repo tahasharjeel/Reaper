@@ -12,7 +12,7 @@ sc.src = "score.mp3";
 let treeUpArray = [];
 let treeDownArray = [];
 const gravity = 9.8;
-var reqId = undefined;
+var reqId;
 
 const background = {
   x: 0,
@@ -98,7 +98,7 @@ birdy.onload = function() {
 }
 
 function drawBack() {
-
+  reqId=undefined;
   ctx.drawImage(img, background.x + background.width, background.y, background.width, background.height);
   ctx.drawImage(img, background.x, background.y, background.width, background.height);
   background.x -= background.speed;
