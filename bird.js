@@ -12,7 +12,7 @@ sc.src = "score.mp3";
 let treeUpArray = [];
 let treeDownArray = [];
 const gravity = 9.8;
-var reqId = true;
+var reqId = undefined;
 
 const background = {
   x: 0,
@@ -108,7 +108,7 @@ function drawBack() {
 
   if (bird.y < 0 || bird.y + bird.height > canvas.height) {
     die.play();
-    reqId=false;
+    window.cancelAnimationFrame(reqId);
     alert("GAME OVER!\nSCORE " + bird.score);
     location.reload();
   }
@@ -129,12 +129,12 @@ function drawBack() {
       }
       if (bird.x + bird.width > treeUpArray[i].x && bird.y < treeUpArray[i].y + treeUpArray[i].height - 30) {
         die.play();
-        reqId=false;
+        window.cancelAnimationFrame(reqId);
         alert("GAME OVER!\nSCORE " + bird.score);
         location.reload();
       } else if (bird.y + bird.height > treeDownArray[i].y + 30 && bird.x + bird.width > treeDownArray[i].x) {
         die.play();
-        reqId=false;
+        window.cancelAnimationFrame(reqId);
         alert("GAME OVER!\nSCORE " + bird.score);
         location.reload();
       }
@@ -162,8 +162,6 @@ function drawBack() {
   bird.y += bird.speed;
   ctx.font = "30px Arial";
   ctx.fillText("SCORE " + bird.score, 10, 50);
-  if(reqId){
-  window.requestAnimationFrame(drawBack);
-  }
+  reqId = window.requestAnimationFrame(drawBack);
 }
 drawBack();
