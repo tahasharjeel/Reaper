@@ -162,6 +162,20 @@ function drawBack() {
   bird.y += bird.speed;
   ctx.font = "30px Arial";
   ctx.fillText("SCORE " + bird.score, 10, 50);
-  reqId = window.requestAnimationFrame(drawBack);
+  start();
+
+}
+
+function start(){
+  if(!reqId){
+    reqId = window.requestAnimationFrame(drawBack);
+  }
+}
+
+function stop() {
+    if (reqId) {
+       window.cancelAnimationFrame(reqId);
+       reqId = undefined;
+    }
 }
 drawBack();
