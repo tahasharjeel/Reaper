@@ -98,7 +98,6 @@ birdy.onload = function() {
 }
 
 function drawBack() {
-  reqId=undefined;
   ctx.drawImage(img, background.x + background.width, background.y, background.width, background.height);
   ctx.drawImage(img, background.x, background.y, background.width, background.height);
   background.x -= background.speed;
@@ -162,20 +161,7 @@ function drawBack() {
   bird.y += bird.speed;
   ctx.font = "30px Arial";
   ctx.fillText("SCORE " + bird.score, 10, 50);
-  start();
-
-}
-
-function start(){
-  if(!reqId){
-    reqId = window.requestAnimationFrame(drawBack);
-  }
-}
-
-function stop() {
-    if (reqId) {
-       window.cancelAnimationFrame(reqId);
-       reqId = undefined;
-    }
+  reqId = window.requestAnimationFrame(drawBack);
 }
 drawBack();
+
